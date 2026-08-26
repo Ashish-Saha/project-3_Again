@@ -1,3 +1,12 @@
 @import "tailwindcss";
 
 /* --------------below CSS----------------- */
+
+@utility container {
+  padding: 1.2rem;
+  center: true;
+}
+
+@theme {
+  --color-primary: #00d991;
+}
