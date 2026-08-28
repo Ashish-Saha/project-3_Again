@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
+import moon from "./assets/icons/moon.svg";
 import sun from "./assets/icons/sun.svg";
-import moon from "./assets/icons/moon.svg"
 import logo from "./assets/logo.svg";
 import ring from "./assets/ring.svg";
-// import cart from "./assets/shopping-cart.svg";
+
 import Cart from "./Cart";
 import CartDetails from "./cine/CartDetails";
 import { CartContext, ThemeContext } from "./contexts/indexContext";
@@ -11,11 +11,11 @@ import { CartContext, ThemeContext } from "./contexts/indexContext";
 export default function Header() {
   const [showCartDetails, setShowCartDetails] = useState(false);
 
-  const { carts, setCarts } = useContext(CartContext);
+  const { state, dispatch } = useContext(CartContext);
   const { darkMode, setDarkMode } = useContext(ThemeContext);
 
   const handleCartDetails = () => {
-    if (carts.length > 0) {
+    if (state.carts.length > 0) {
       setShowCartDetails((prev) => !prev);
     }
   };
@@ -25,8 +25,13 @@ export default function Header() {
   };
 
   const handleCartItemDelete = (deletedId) => {
-    const cartItems = carts.filter((item) => item.id !== deletedId);
-    setCarts(cartItems);
+    // const cartItems = state.carts.filter((item) => item.id !== deletedId);
+    // setCarts(cartItems);
+
+    dispatch({
+      type: "REMOVE_CART",
+      id: deletedId,
+    });
   };
 
   return (
@@ -34,7 +39,7 @@ export default function Header() {
       <header>
         {showCartDetails && (
           <CartDetails
-            carts={carts}
+            carts={state.carts}
             onCloseCartDetails={handleCloseCartDetails}
             onCartItemDelete={handleCartItemDelete}
           />
@@ -57,9 +62,14 @@ export default function Header() {
               <a
                 className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block"
                 href="#"
-                onClick={()=> setDarkMode((mode)=> !mode)}
+                onClick={() => setDarkMode((mode) => !mode)}
               >
-                <img src={ darkMode ? sun : moon} width="24" height="24" alt="" />
+                <img
+                  src={darkMode ? sun : moon}
+                  width="24"
+                  height="24"
+                  alt=""
+                />
               </a>
             </li>
 
@@ -78,7 +88,7 @@ export default function Header() {
                 <img src={cart} width="24" height="24" alt="" />
               </a>
             </li> */}
-            <Cart carts={carts} onCartdetails={handleCartDetails} />
+            <Cart carts={state.carts} onCartdetails={handleCartDetails} />
           </ul>
         </nav>
       </header>

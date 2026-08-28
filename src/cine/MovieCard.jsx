@@ -6,7 +6,7 @@ import Rating from "./Rating";
 
 export default function MovieCard({ movie }) {
   const [showMovieDetailsModal, setMovieDetailsModal] = useState(false);
-  const { carts, setCarts } = useContext(CartContext);
+  const { state, dispatch } = useContext(CartContext);
 
   const handleMovieDetails = (event) => {
     event.preventDefault();
@@ -18,10 +18,15 @@ export default function MovieCard({ movie }) {
   };
 
   const handleCart = (movieItem) => {
-    const duplicateMovie = carts.find((item) => item.id === movieItem.id);
+    const duplicateMovie = state.carts.find((item) => item.id === movieItem.id);
 
     if (!duplicateMovie) {
-      setCarts([...carts, movieItem]);
+      // setCarts([...carts, movieItem]);
+
+      dispatch({
+        type: "ADD_TO_CART",
+        movieItem: movieItem,
+      });
     } else {
       console.error(`${movie.title} is already added to cart`);
     }
@@ -30,7 +35,11 @@ export default function MovieCard({ movie }) {
   return (
     <>
       {showMovieDetailsModal && (
-        <MovieDetailsModal movieSelected={movie} onClose={handleCloseModal} onHandleCart={handleCart} />
+        <MovieDetailsModal
+          movieSelected={movie}
+          onClose={handleCloseModal}
+          onHandleCart={handleCart}
+        />
       )}
       <figure className="p-4 border border-black/10 shadow-sm dark:border-white/10 rounded-xl">
         <a href="" onClick={(e) => handleMovieDetails(e)}>
