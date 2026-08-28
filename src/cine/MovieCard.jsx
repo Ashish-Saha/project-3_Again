@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CartContext } from "../contexts/indexContext";
 import { getImageUrl } from "../utils/getImageUrl";
 import MovieDetailsModal from "./MovieDetailsModal";
 import Rating from "./Rating";
 
 export default function MovieCard({ movie }) {
   const [showMovieDetailsModal, setMovieDetailsModal] = useState(false);
+  const { carts, setCarts } = useContext(CartContext);
 
   const handleMovieDetails = (event) => {
     event.preventDefault();
@@ -15,10 +17,20 @@ export default function MovieCard({ movie }) {
     setMovieDetailsModal((prev) => !prev);
   };
 
+  const handleCart = (movieItem) => {
+    const duplicateMovie = carts.find((item) => item.id === movieItem.id);
+
+    if (!duplicateMovie) {
+      setCarts([...carts, movieItem]);
+    } else {
+      console.error(`${movie.title} is already added to cart`);
+    }
+  };
+
   return (
     <>
       {showMovieDetailsModal && (
-        <MovieDetailsModal movieSelected={movie} onClose={handleCloseModal} />
+        <MovieDetailsModal movieSelected={movie} onClose={handleCloseModal} onHandleCart={handleCart} />
       )}
       <figure className="p-4 border border-black/10 shadow-sm dark:border-white/10 rounded-xl">
         <a href="" onClick={(e) => handleMovieDetails(e)}>
@@ -36,6 +48,11 @@ export default function MovieCard({ movie }) {
             <button
               className="bg-primary rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm"
               href="#"
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                handleCart(movie);
+              }}
             >
               <img src="./assets/tag.svg" alt="" />
               <span>${movie.price} | Add to Cart</span>

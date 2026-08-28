@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* For dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* --------------below CSS----------------- */
 
 @utility container {
@@ -9,4 +12,11 @@
 
 @theme {
   --color-primary: #00d991;
+}
+
+
+@theme .dark {
+  @apply {
+    bg-[#171923] text-[#f7fafc]
+  }
 }
