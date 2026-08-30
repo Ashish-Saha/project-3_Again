@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { CartContext } from "../contexts/indexContext";
 import { getImageUrl } from "../utils/getImageUrl";
 import MovieDetailsModal from "./MovieDetailsModal";
@@ -21,14 +22,18 @@ export default function MovieCard({ movie }) {
     const duplicateMovie = state.carts.find((item) => item.id === movieItem.id);
 
     if (!duplicateMovie) {
-      // setCarts([...carts, movieItem]);
-
       dispatch({
         type: "ADD_TO_CART",
         movieItem: movieItem,
       });
+
+      toast.success(`${movie.title} has been Successfully added`, {
+        position: "bottom-right",
+      });
     } else {
-      console.error(`${movie.title} is already added to cart`);
+      toast.error(`${movie.title} is already Added`, {
+        position: "bottom-right",
+      });
     }
   };
 

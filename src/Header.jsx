@@ -4,6 +4,7 @@ import sun from "./assets/icons/sun.svg";
 import logo from "./assets/logo.svg";
 import ring from "./assets/ring.svg";
 
+import { toast } from "react-toastify";
 import Cart from "./Cart";
 import CartDetails from "./cine/CartDetails";
 import { CartContext, ThemeContext } from "./contexts/indexContext";
@@ -24,13 +25,14 @@ export default function Header() {
     setShowCartDetails(false);
   };
 
-  const handleCartItemDelete = (deletedId) => {
-    // const cartItems = state.carts.filter((item) => item.id !== deletedId);
-    // setCarts(cartItems);
-
+  const handleCartItemDelete = (deletedItem) => {
     dispatch({
       type: "REMOVE_CART",
-      id: deletedId,
+      id: deletedItem.id,
+    });
+
+    toast(`${deletedItem.title} has been Removed from cart`, {
+      position: "bottom-right",
     });
   };
 

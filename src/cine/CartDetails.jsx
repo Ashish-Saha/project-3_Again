@@ -38,7 +38,7 @@ export default function CartDetails({
                   <div className="flex justify-between gap-4 items-center">
                     <button
                       className="bg-[#D42967] rounded-md p-2 md:px-4 inline-flex items-center space-x-2 text-white"
-                      onClick={() => onCartItemDelete(item.id)}
+                      onClick={() => onCartItemDelete(item)}
                     >
                       <img
                         className="w-5 h-5"
